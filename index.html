@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasserie de Béthusy | Lausanne</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter pour le texte, Playfair Display pour les titres chic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome pour les icônes (étoiles, téléphone, etc.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brasserie: {
+                            bg: '#0a0a0c',       // Fond noir/gris très profond
+                            card: '#141417',     // Fond légèrement plus clair pour les cartes
+                            gold: '#C5A059',     // Or chic et sobre
+                            goldHover: '#a38446',// Or survol
+                            text: '#E5E7EB',     // Texte clair (gray-200)
+                            muted: '#9CA3AF',    // Texte discret (gray-400)
+                            border: '#27272a'    // Bordures sombres
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0c;
+            color: #E5E7EB;
+        }
+        
+        /* Pointillés pour le menu adaptés au thème sombre */
+        .menu-item-dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted #3f3f46;
+            margin: 0 1rem;
+            position: relative;
+            top: -6px;
+        }
+
+        /* Effet d'apparition au défilement */
+        .fade-in {
+            animation: fadeIn 1.2s cubic-bezier(0.39, 0.57, 0.56, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Widget Google Reviews */
+        .google-icon {
+            background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-brasserie-gold selection:text-white">
+
+    <nav class="fixed w-full z-50 bg-brasserie-bg/90 backdrop-blur-md border-b border-brasserie-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="font-serif text-3xl font-bold text-white tracking-widest uppercase">
+                        Béthusy<span class="text-brasserie-gold">.</span>
+                    </a>
+                </div>
+                
+                <!-- Menu Desktop -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#accueil" class="text-sm font-medium text-brasserie-muted hover:text-brasserie-gold transition-colors tracking-wide uppercase">Accueil</a>
+                    <a href="#a-propos" class="text-sm font-medium text-brasserie-muted hover:text-brasserie-gold transition-colors tracking-wide uppercase">La Maison</a>
+                    <a href="#menu" class="text-sm font-medium text-brasserie-muted hover:text-brasserie-gold transition-colors tracking-wide uppercase">Carte</a>
+                    <a href="#avis" class="text-sm font-medium text-brasserie-muted hover:text-brasserie-gold transition-colors tracking-wide uppercase">Avis</a>
+                    <a href="#contact" class="text-sm font-medium text-brasserie-muted hover:text-brasserie-gold transition-colors tracking-wide uppercase">Contact</a>
+                    
+                    <!-- Appel à l'action : Téléphone -->
+                    <a href="tel:+41213231005" class="ml-4 flex items-center px-5 py-2.5 bg-brasserie-gold/10 border border-brasserie-gold text-brasserie-gold text-sm font-medium rounded hover:bg-brasserie-gold hover:text-white transition-all shadow-[0_0_15px_rgba(197,160,89,0.2)]">
+                        <i class="fa-solid fa-phone mr-2"></i> 021 323 10 05
+                    </a>
+                </div>
+
+                <!-- Menu Mobile Bouton -->
+                <div class="md:hidden flex items-center">
+                    <a href="tel:+41213231005" class="text-brasserie-gold mr-6 text-lg"><i class="fa-solid fa-phone"></i></a>
+                    <button id="mobile-menu-btn" class="text-white hover:text-brasserie-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile (Caché par défaut) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brasserie-card border-b border-brasserie-border absolute w-full shadow-2xl">
+            <div class="px-4 pt-4 pb-8 space-y-4 flex flex-col items-center">
+                <a href="#accueil" class="mobile-link block text-lg font-serif hover:text-brasserie-gold">Accueil</a>
+                <a href="#a-propos" class="mobile-link block text-lg font-serif hover:text-brasserie-gold">La Maison</a>
+                <a href="#menu" class="mobile-link block text-lg font-serif hover:text-brasserie-gold">Carte</a>
+                <a href="#avis" class="mobile-link block text-lg font-serif hover:text-brasserie-gold">Avis</a>
+                <a href="#contact" class="mobile-link block text-lg font-serif hover:text-brasserie-gold">Contact</a>
+                <div class="w-12 h-px bg-brasserie-gold/50 my-2"></div>
+                <p class="text-sm text-brasserie-muted text-center">Réservations par téléphone :</p>
+                <a href="tel:+41213231005" class="mobile-link text-brasserie-gold font-bold text-xl"><i class="fa-solid fa-phone mr-2"></i>021 323 10 05</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="accueil" class="relative h-screen min-h-[700px] flex items-center justify-center">
+        <!-- Image de fond sombre et élégante -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                 alt="Ambiance chic brasserie" 
+                 class="w-full h-full object-cover object-center" />
+            <!-- Overlay très sombre pour contraster avec le texte -->
+            <div class="absolute inset-0 bg-gradient-to-b from-brasserie-bg/90 via-brasserie-bg/70 to-brasserie-bg"></div>
+        </div>
+
+        <!-- Contenu Hero -->
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in mt-16">
+            <div class="flex items-center justify-center space-x-4 mb-6">
+                <div class="h-px w-12 bg-brasserie-gold"></div>
+                <span class="text-brasserie-gold font-medium tracking-[0.2em] uppercase text-sm">Restaurant & Bar</span>
+                <div class="h-px w-12 bg-brasserie-gold"></div>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif text-white font-bold mb-8 drop-shadow-2xl">
+                L'Élégance<br>
+                <span class="text-4xl md:text-6xl text-gray-300 font-light italic">d'une brasserie classique</span>
+            </h1>
+            
+            <p class="text-gray-400 text-lg md:text-xl mb-12 font-light max-w-2xl mx-auto">
+                L'authentique tradition culinaire suisse revisitée dans un cadre chic au cœur de Lausanne.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="#menu" class="w-full sm:w-auto px-8 py-4 border border-gray-600 text-white font-medium uppercase tracking-wider text-sm rounded hover:border-brasserie-gold hover:text-brasserie-gold transition-colors">
+                    Découvrir la carte
+                </a>
+            </div>
+            <p class="text-xs text-brasserie-muted mt-4 italic">* Les réservations se font exclusivement par téléphone.</p>
+        </div>
+        
+        <!-- Indicateur de défilement -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#a-propos" class="text-brasserie-muted hover:text-brasserie-gold transition-colors">
+                <i class="fa-solid fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <section id="a-propos" class="py-24 bg-brasserie-bg relative">
+        <!-- Décoration d'arrière-plan -->
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brasserie-gold/20 to-transparent"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Texte -->
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Notre Maison</h2>
+                    <div class="w-20 h-1 bg-brasserie-gold mb-8"></div>
+                    
+                    <p class="text-lg text-gray-300 font-light leading-relaxed mb-6">
+                        Véritable institution de quartier, la Brasserie de Béthusy vous accueille dans un cadre élégant où la convivialité rencontre le chic contemporain. 
+                    </p>
+                    <p class="text-lg text-gray-300 font-light leading-relaxed mb-10">
+                        Nous mettons un point d'honneur à travailler des produits frais, de saison et locaux. Notre chef sublime les grands classiques de la gastronomie suisse pour vous offrir une expérience culinaire généreuse et raffinée.
+                    </p>
+                    
+                    <!-- Encart Horaires Cuisine très visible -->
+                    <div class="bg-brasserie-card border border-brasserie-border p-6 rounded-lg relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 text-brasserie-gold text-6xl transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform"><i class="fa-solid fa-utensils"></i></div>
+                        <h3 class="text-xl font-serif text-brasserie-gold mb-4"><i class="fa-regular fa-clock mr-2"></i> Service Cuisine</h3>
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex justify-between items-center">
+                                <span class="font-medium text-white">Lundi au Vendredi (Midi)</span>
+                                <span>11h45 — 13h45</span>
+                            </li>
+                            <li class="flex justify-between items-center border-t border-gray-800 pt-2">
+                                <span class="font-medium text-white">Lundi au Samedi (Soir)</span>
+                                <span>18h30 — 21h30</span>
+                            </li>
+                            <li class="flex justify-between items-center border-t border-gray-800 pt-2 text-brasserie-gold font-medium">
+                                <span>Dimanche</span>
+                                <span>BRUNCH exclusif</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Images chic -->
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cuisine raffinée" class="rounded-lg shadow-2xl object-cover h-64 w-full transform translate-y-8">
+                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Intérieur chic" class="rounded-lg shadow-2xl object-cover h-64 w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="py-24 bg-[#0d0d10] relative border-y border-brasserie-border">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <span class="text-brasserie-gold font-medium tracking-[0.2em] uppercase text-sm mb-4 block">Gastronomie Suisse</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Extrait de la Carte</h2>
+                <div class="w-20 h-1 bg-brasserie-gold mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-16">
+                
+                <!-- Entrées -->
+                <div class="space-y-10">
+                    <h3 class="text-3xl font-serif text-white border-b border-gray-800 pb-4 mb-8">
+                        <span class="text-brasserie-gold font-light italic mr-2">Les</span> Entrées
+                    </h3>
+                    
+                    <div class="space-y-8">
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Salade de saison</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">9.-</span>
+                            </div>
+                            <p class="text-sm text-brasserie-muted mt-1">Vinaigrette maison à l'ancienne</p>
+                        </div>
+                        
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Os à Moelle</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">18.-</span>
+                            </div>
+                            <p class="text-sm text-brasserie-muted mt-1">Rôti au four, fleur de sel, pain grillé</p>
+                        </div>
+                        
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Tartare de Bœuf</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">22.-</span>
+                            </div>
+                            <p class="text-sm text-brasserie-muted mt-1">Coupé au couteau, portion entrée</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plats Principaux -->
+                <div class="space-y-10">
+                    <h3 class="text-3xl font-serif text-white border-b border-gray-800 pb-4 mb-8">
+                        <span class="text-brasserie-gold font-light italic mr-2">Les</span> Classiques
+                    </h3>
+                    
+                    <div class="space-y-8">
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Entrecôte Café de Paris</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">42.-</span>
+                            </div>
+                            <p class="text-sm text-brasserie-muted mt-1">Viande rassie sur os, frites allumettes, beurre maison</p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Fondue Moitié-Moitié</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">26.-</span>
+                            </div>
+                            <p class="text-sm text-brasserie-muted mt-1">Prix par personne, minimum 2 personnes</p>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Filets de Perche</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">36.-</span>
+                            </div>
+                            <p class="text-sm text-brasserie-muted mt-1">Meunière, sauce tartare, frites fraîches</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-20 flex justify-center">
+                <a href="tel:+41213231005" class="inline-flex items-center space-x-2 text-brasserie-gold hover:text-white transition-colors uppercase tracking-widest text-sm font-semibold group">
+                    <i class="fa-solid fa-phone transform group-hover:scale-110 transition-transform mr-1"></i>
+                    <span>Appeler le 021 323 10 05 pour réserver</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="avis" class="py-24 bg-brasserie-bg relative overflow-hidden">
+        <!-- Glow effect -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brasserie-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col items-center mb-16 text-center">
+                <i class="fa-brands fa-google text-4xl mb-4 text-white"></i>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Ce que disent nos clients</h2>
+                <div class="flex items-center space-x-2 text-brasserie-gold text-xl">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span class="text-white text-lg font-medium ml-2">4.7/5</span>
+                </div>
+            </div>
+
+            <!-- Grille des avis -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Carte Avis 1 -->
+                <div class="bg-brasserie-card p-8 rounded-xl border border-gray-800 shadow-xl hover:border-brasserie-gold/50 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold">M</div>
+                            <div>
+                                <h4 class="text-white font-medium">Marc T.</h4>
+                                <p class="text-xs text-gray-500">Il y a 2 semaines</p>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-google text-gray-600"></i>
+                    </div>
+                    <div class="flex text-brasserie-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 font-light italic">"Une magnifique découverte. L'entrecôte était cuite à la perfection et le service est d'un professionnalisme rare. Une ambiance tamisée très chic. Je recommande le brunch du dimanche !"</p>
+                </div>
+
+                <!-- Carte Avis 2 -->
+                <div class="bg-brasserie-card p-8 rounded-xl border border-gray-800 shadow-xl hover:border-brasserie-gold/50 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold">S</div>
+                            <div>
+                                <h4 class="text-white font-medium">Sophie L.</h4>
+                                <p class="text-xs text-gray-500">Il y a 1 mois</p>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-google text-gray-600"></i>
+                    </div>
+                    <div class="flex text-brasserie-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 font-light italic">"De loin la meilleure fondue de Lausanne ! Le cadre est superbe, très élégant mais on s'y sent comme à la maison grâce à l'accueil chaleureux de l'équipe."</p>
+                </div>
+
+                <!-- Carte Avis 3 -->
+                <div class="bg-brasserie-card p-8 rounded-xl border border-gray-800 shadow-xl hover:border-brasserie-gold/50 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold">A</div>
+                            <div>
+                                <h4 class="text-white font-medium">Alexandre D.</h4>
+                                <p class="text-xs text-gray-500">Il y a 2 mois</p>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-google text-gray-600"></i>
+                    </div>
+                    <div class="flex text-brasserie-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 font-light italic">"Un classique indémodable. Le tartare de bœuf est exceptionnel. C'est l'endroit parfait pour un dîner d'affaires ou un repas en amoureux dans un cadre feutré."</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-[#050506] border-t border-gray-800 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
+                
+                <!-- Info Contact -->
+                <div>
+                    <h2 class="text-3xl font-serif text-white mb-8">Nous Trouver</h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Réservation Emphasized -->
+                        <div class="bg-brasserie-card border border-brasserie-gold/30 p-8 rounded-lg">
+                            <h3 class="text-brasserie-gold text-xl font-serif mb-4 flex items-center">
+                                <i class="fa-solid fa-bell-concierge mr-3"></i> Réservations
+                            </h3>
+                            <p class="text-gray-300 font-light mb-6">Afin de vous garantir le meilleur service, nous prenons les réservations <strong class="text-white">uniquement par téléphone</strong>.</p>
+                            <a href="tel:+41213231005" class="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 bg-brasserie-gold text-black font-bold uppercase tracking-wider text-sm rounded hover:bg-white transition-colors">
+                                <i class="fa-solid fa-phone mr-3"></i> 021 323 10 05
+                            </a>
+                        </div>
+
+                        <!-- Adresse -->
+                        <div class="flex items-start">
+                            <i class="fa-solid fa-location-dot text-brasserie-gold text-xl mt-1 w-8"></i>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Adresse</h4>
+                                <p class="text-gray-400 font-light cursor-pointer hover:text-white transition" onclick="copyToClipboard('Av. de Béthusy 27, 1005 Lausanne')">
+                                    Avenue de Béthusy 27<br>
+                                    1005 Lausanne<br>
+                                    Suisse
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Réseaux -->
+                        <div class="flex items-center space-x-6 pt-4">
+                            <a href="https://www.instagram.com/brasserie_de_bethusy/" target="_blank" class="w-12 h-12 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-brasserie-gold hover:border-brasserie-gold transition-all">
+                                <i class="fa-brands fa-instagram text-xl"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-brasserie-gold hover:border-brasserie-gold transition-all">
+                                <i class="fa-brands fa-facebook-f text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Maps (Stylisé pour thème sombre) -->
+                <div class="h-full min-h-[400px] rounded-lg overflow-hidden border border-gray-800 grayscale invert-[90%] contrast-[85%]">
+                    <!-- Utilisation de l'iframe Google Maps classique, mais le filtre CSS parent la rend "Dark Mode" -->
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2745.3197607775955!2d6.6402377!3d46.5215715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478c2e359218d6db%3A0xc622668fc7254593!2sAv.%20de%20B%C3%A9thusy%2027%2C%201005%20Lausanne%2C%20Suisse!5e0!3m2!1sfr!2sfr!4v1695287000000!5m2!1sfr!2sfr" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 font-light">
+                <p>&copy; 2026 Brasserie de Béthusy. Tous droits réservés.</p>
+                <div class="space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-brasserie-gold transition-colors">Mentions légales</a>
+                    <a href="#" class="hover:text-brasserie-gold transition-colors">Politique de confidentialité</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gestion du menu mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if(mobileMenu.classList.contains('hidden')){
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            } else {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            }
+        });
+
+        // Fermer le menu mobile lors du clic sur un lien
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        // Fonction pour copier l'adresse au clic
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.createElement('div');
+                toast.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Adresse copiée !';
+                toast.className = "fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-brasserie-gold text-black px-6 py-3 rounded-full shadow-[0_0_20px_rgba(197,160,89,0.3)] z-50 transition-opacity duration-300 font-medium text-sm";
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }).catch(err => {
+                console.error('Erreur lors de la copie : ', err);
+            });
+        }
+        
+        // Effet de changement de couleur de la navbar au scroll
+        const navbar = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-brasserie-bg/95', 'shadow-lg');
+                navbar.classList.remove('bg-brasserie-bg/90');
+            } else {
+                navbar.classList.remove('bg-brasserie-bg/95', 'shadow-lg');
+                navbar.classList.add('bg-brasserie-bg/90');
+            }
+        });
+    </script>
+</body>
+</html>
