@@ -16,6 +16,9 @@
     <!-- Font Awesome pour les icônes (étoiles, téléphone, etc.) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- PapaParse pour lire Google Sheets -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -168,6 +171,21 @@
         </div>
     </header>
 
+    <!-- SECTION ANNONCE SPÉCIALE (Gérée par Google Sheets) -->
+    <!-- Invisible par défaut, s'affiche si Afficher="OUI" -->
+    <section id="news-section" class="hidden bg-brasserie-bg pt-16 relative z-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brasserie-card border border-brasserie-gold/30 rounded-lg p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left shadow-[0_0_20px_rgba(197,160,89,0.1)]">
+                <div class="text-brasserie-gold text-4xl mt-1">
+                    <i class="fa-regular fa-bell"></i>
+                </div>
+                <div class="flex-1" id="news-content">
+                    <!-- Le titre et le message s'injecteront ici -->
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="a-propos" class="py-24 bg-brasserie-bg relative">
         <!-- Décoration d'arrière-plan -->
         <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brasserie-gold/20 to-transparent"></div>
@@ -217,6 +235,7 @@
         </div>
     </section>
 
+    <!-- SECTION MENU DYNAMIQUE (Gérée par Google Sheets) -->
     <section id="menu" class="py-24 bg-[#0d0d10] relative border-y border-brasserie-border">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-20">
@@ -225,80 +244,11 @@
                 <div class="w-20 h-1 bg-brasserie-gold mx-auto"></div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-16">
-                
-                <!-- Entrées -->
-                <div class="space-y-10">
-                    <h3 class="text-3xl font-serif text-white border-b border-gray-800 pb-4 mb-8">
-                        <span class="text-brasserie-gold font-light italic mr-2">Les</span> Entrées
-                    </h3>
-                    
-                    <div class="space-y-8">
-                        <div class="flex flex-col">
-                            <div class="flex items-baseline text-white">
-                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Salade de saison</h4>
-                                <div class="menu-item-dots"></div>
-                                <span class="font-bold text-brasserie-gold text-lg">9.-</span>
-                            </div>
-                            <p class="text-sm text-brasserie-muted mt-1">Vinaigrette maison à l'ancienne</p>
-                        </div>
-                        
-                        <div class="flex flex-col">
-                            <div class="flex items-baseline text-white">
-                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Os à Moelle</h4>
-                                <div class="menu-item-dots"></div>
-                                <span class="font-bold text-brasserie-gold text-lg">18.-</span>
-                            </div>
-                            <p class="text-sm text-brasserie-muted mt-1">Rôti au four, fleur de sel, pain grillé</p>
-                        </div>
-                        
-                        <div class="flex flex-col">
-                            <div class="flex items-baseline text-white">
-                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Tartare de Bœuf</h4>
-                                <div class="menu-item-dots"></div>
-                                <span class="font-bold text-brasserie-gold text-lg">22.-</span>
-                            </div>
-                            <p class="text-sm text-brasserie-muted mt-1">Coupé au couteau, portion entrée</p>
-                        </div>
-                    </div>
+            <!-- Conteneur dans lequel le JS va injecter les plats -->
+            <div id="menu-container" class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-16 min-h-[300px]">
+                <div class="col-span-1 lg:col-span-2 flex justify-center items-center h-full">
+                    <p class="text-brasserie-muted animate-pulse text-lg"><i class="fa-solid fa-spinner fa-spin mr-3"></i> Chargement de la carte en cours...</p>
                 </div>
-
-                <!-- Plats Principaux -->
-                <div class="space-y-10">
-                    <h3 class="text-3xl font-serif text-white border-b border-gray-800 pb-4 mb-8">
-                        <span class="text-brasserie-gold font-light italic mr-2">Les</span> Classiques
-                    </h3>
-                    
-                    <div class="space-y-8">
-                        <div class="flex flex-col">
-                            <div class="flex items-baseline text-white">
-                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Entrecôte Café de Paris</h4>
-                                <div class="menu-item-dots"></div>
-                                <span class="font-bold text-brasserie-gold text-lg">42.-</span>
-                            </div>
-                            <p class="text-sm text-brasserie-muted mt-1">Viande rassie sur os, frites allumettes, beurre maison</p>
-                        </div>
-
-                        <div class="flex flex-col">
-                            <div class="flex items-baseline text-white">
-                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Fondue Moitié-Moitié</h4>
-                                <div class="menu-item-dots"></div>
-                                <span class="font-bold text-brasserie-gold text-lg">26.-</span>
-                            </div>
-                            <p class="text-sm text-brasserie-muted mt-1">Prix par personne, minimum 2 personnes</p>
-                        </div>
-
-                        <div class="flex flex-col">
-                            <div class="flex items-baseline text-white">
-                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">Filets de Perche</h4>
-                                <div class="menu-item-dots"></div>
-                                <span class="font-bold text-brasserie-gold text-lg">36.-</span>
-                            </div>
-                            <p class="text-sm text-brasserie-muted mt-1">Meunière, sauce tartare, frites fraîches</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             
             <div class="mt-20 flex justify-center">
@@ -461,7 +411,120 @@
         </div>
     </footer>
 
+    <!-- SCRIPTS (Menu Mobile, Interaction, et GOOGLE SHEETS) -->
     <script>
+        // === 1. GESTION GOOGLE SHEETS (MENU ET NEWS) ===
+        
+        // Remplacez les liens ci-dessous par les URL CSV de votre tableau Google Sheets
+        const menuCsvUrl = "VOTRE_LIEN_CSV_MENU_ICI";
+        const newsCsvUrl = "VOTRE_LIEN_CSV_ACTUALITES_ICI";
+
+        // A. Chargement de l'Annonce Spéciale
+        function loadNews() {
+            if (newsCsvUrl === "VOTRE_LIEN_CSV_ACTUALITES_ICI") {
+                // Données de démonstration
+                renderNews([{ Titre: 'Fermeture Exceptionnelle', Message: 'Chers clients, la brasserie sera exceptionnellement fermée ce lundi soir. Nous vous retrouvons dès mardi midi !', Afficher: 'OUI' }]);
+                return;
+            }
+
+            Papa.parse(newsCsvUrl, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    renderNews(results.data);
+                }
+            });
+        }
+
+        function renderNews(data) {
+            // Cherche une ligne avec Afficher = 'OUI'
+            const activeNews = data.find(item => item.Afficher && item.Afficher.toUpperCase().trim() === 'OUI');
+            const newsSection = document.getElementById('news-section');
+            const newsContent = document.getElementById('news-content');
+
+            if (activeNews && activeNews.Titre && activeNews.Message) {
+                newsContent.innerHTML = `
+                    <h3 class="text-2xl font-serif font-bold text-white mb-2">${activeNews.Titre}</h3>
+                    <p class="text-gray-300 font-light leading-relaxed">${activeNews.Message}</p>
+                `;
+                newsSection.classList.remove('hidden');
+            } else {
+                newsSection.classList.add('hidden');
+            }
+        }
+
+        // B. Chargement du Menu
+        function loadMenu() {
+            const menuContainer = document.getElementById('menu-container');
+
+            if (menuCsvUrl === "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv") {
+                // Données de démo pour répliquer votre design statique initial
+                renderMenu([
+                    { Categorie: 'Les Entrées', Nom: 'Salade de saison', Description: 'Vinaigrette maison à l\'ancienne', Prix: '9.-' },
+                    { Categorie: 'Les Entrées', Nom: 'Os à Moelle', Description: 'Rôti au four, fleur de sel, pain grillé', Prix: '18.-' },
+                    { Categorie: 'Les Entrées', Nom: 'Tartare de Bœuf', Description: 'Coupé au couteau, portion entrée', Prix: '22.-' },
+                    { Categorie: 'Les Classiques', Nom: 'Entrecôte Café de Paris', Description: 'Viande rassie sur os, frites allumettes, beurre maison', Prix: '42.-' },
+                    { Categorie: 'Les Classiques', Nom: 'Fondue Moitié-Moitié', Description: 'Prix par personne, minimum 2 personnes', Prix: '26.-' },
+                    { Categorie: 'Les Classiques', Nom: 'Filets de Perche', Description: 'Meunière, sauce tartare, frites fraîches', Prix: '36.-' }
+                ]);
+                return;
+            }
+
+            Papa.parse(menuCsvUrl, {
+                download: true,
+                header: true,
+                complete: function(results) { renderMenu(results.data); },
+                error: function(err) { 
+                    menuContainer.innerHTML = '<p class="col-span-1 lg:col-span-2 text-center text-red-500 font-light">Erreur lors du chargement de la carte. Vérifiez le lien du fichier Google Sheets.</p>'; 
+                }
+            });
+        }
+
+        function renderMenu(data) {
+            const categories = {};
+            // Groupement des plats par Catégorie
+            data.forEach(item => {
+                if (!item.Categorie || !item.Nom) return; 
+                if (!categories[item.Categorie]) categories[item.Categorie] = [];
+                categories[item.Categorie].push(item);
+            });
+
+            const menuContainer = document.getElementById('menu-container');
+            menuContainer.innerHTML = ''; // Enlève le texte de chargement
+
+            // Génération du HTML avec les classes de votre design
+            for (const [category, items] of Object.entries(categories)) {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'space-y-10';
+                
+                let html = `
+                    <h3 class="text-3xl font-serif text-white border-b border-gray-800 pb-4 mb-8">
+                        ${category}
+                    </h3>
+                    <div class="space-y-8">
+                `;
+                
+                items.forEach(item => {
+                    html += `
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline text-white">
+                                <h4 class="font-medium text-xl uppercase tracking-wider text-gray-200">${item.Nom}</h4>
+                                <div class="menu-item-dots"></div>
+                                <span class="font-bold text-brasserie-gold text-lg">${item.Prix}</span>
+                            </div>
+                            ${item.Description ? `<p class="text-sm text-brasserie-muted mt-1">${item.Description}</p>` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+                catDiv.innerHTML = html;
+                menuContainer.appendChild(catDiv);
+            }
+        }
+
+        // === 2. INTERFACE UTILISATEUR ===
+        
         // Gestion du menu mobile
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -515,6 +578,12 @@
                 navbar.classList.remove('bg-brasserie-bg/95', 'shadow-lg');
                 navbar.classList.add('bg-brasserie-bg/90');
             }
+        });
+
+        // Lancement des scripts dynamiques au chargement
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNews();
+            loadMenu();
         });
     </script>
 </body>
