@@ -417,14 +417,14 @@
         
         // Remplacez les liens ci-dessous par les URL CSV de votre tableau Google Sheets
         const menuCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv";
-        const newsCsvUrl = "VOTRE_LIEN_CSV_ACTUALITES_ICI";
+        const newsCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv";
 
         // A. Chargement de l'Annonce Spéciale
         function loadNews() {
-            if (newsCsvUrl === "VOTRE_LIEN_CSV_ACTUALITES_ICI") {
+            if (newsCsvUrl === "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv") {
                 // Données de démonstration
-                renderNews([{ Titre: 'Fermeture Exceptionnelle', Message: 'Chers clients, la brasserie sera exceptionnellement fermée ce lundi soir. Nous vous retrouvons dès mardi midi !', Afficher: 'OUI' }]);
-                return;
+                //renderNews([{ Titre: 'Fermeture Exceptionnelle', Message: 'Chers clients, la brasserie sera exceptionnellement fermée ce lundi soir. Nous vous retrouvons dès mardi midi !', Afficher: 'OUI' }]);
+                //return;
             }
 
             Papa.parse(newsCsvUrl, {
