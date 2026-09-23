@@ -412,21 +412,16 @@
     </footer>
 
     <!-- SCRIPTS (Menu Mobile, Interaction, et GOOGLE SHEETS) -->
+    <!-- SCRIPTS (Menu Mobile, Interaction, et GOOGLE SHEETS) -->
     <script>
         // === 1. GESTION GOOGLE SHEETS (MENU ET NEWS) ===
         
-        // Remplacez les liens ci-dessous par les URL CSV de votre tableau Google Sheets
-        const menuCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv";
-        const newsCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv";
+        // ⚠️ REMPLACEZ CES DEUX LIENS PAR VOS DEUX LIENS DISTINCTS (L'un pour l'onglet Menu, l'autre pour l'onglet News)
+        const menuCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?gid=0&single=true&output=csv";
+        const newsCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?gid=1358617039&single=true&output=csv";
 
         // A. Chargement de l'Annonce Spéciale
         function loadNews() {
-            if (newsCsvUrl === "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv") {
-                // Données de démonstration
-                //renderNews([{ Titre: 'Fermeture Exceptionnelle', Message: 'Chers clients, la brasserie sera exceptionnellement fermée ce lundi soir. Nous vous retrouvons dès mardi midi !', Afficher: 'OUI' }]);
-                //return;
-            }
-
             Papa.parse(newsCsvUrl, {
                 download: true,
                 header: true,
@@ -456,19 +451,6 @@
         // B. Chargement du Menu
         function loadMenu() {
             const menuContainer = document.getElementById('menu-container');
-
-            if (menuCsvUrl === "https://docs.google.com/spreadsheets/d/e/2PACX-1vRiLYyYCnd4JU6TmIlpgjmbOF7wmDH4OJFmW2Qbwctf-Oy8qEGu478Dm-EQTdYfWRr4q8C7Wry-mqR-/pub?output=csv") {
-                // Données de démo pour répliquer votre design statique initial
-                //renderMenu([
-                    //{ Categorie: 'Les Entrées', Nom: 'Salade de saison', Description: 'Vinaigrette maison à l\'ancienne', Prix: '9.-' },
-                    //{ Categorie: 'Les Entrées', Nom: 'Os à Moelle', Description: 'Rôti au four, fleur de sel, pain grillé', Prix: '18.-' },
-                    //{ Categorie: 'Les Entrées', Nom: 'Tartare de Bœuf', Description: 'Coupé au couteau, portion entrée', Prix: '22.-' },
-                    //{ Categorie: 'Les Classiques', Nom: 'Entrecôte Café de Paris', Description: 'Viande rassie sur os, frites allumettes, beurre maison', Prix: '42.-' },
-                    //{ Categorie: 'Les Classiques', Nom: 'Fondue Moitié-Moitié', Description: 'Prix par personne, minimum 2 personnes', Prix: '26.-' },
-                    //{ Categorie: 'Les Classiques', Nom: 'Filets de Perche', Description: 'Meunière, sauce tartare, frites fraîches', Prix: '36.-' }
-                ]);
-                return;
-            }
 
             Papa.parse(menuCsvUrl, {
                 download: true,
